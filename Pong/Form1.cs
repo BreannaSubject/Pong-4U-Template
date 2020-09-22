@@ -45,13 +45,13 @@ namespace Pong
         //ball directions, speed, and rectangle
         Boolean ballMoveRight = true;
         Boolean ballMoveDown = true;
-        const int BALL_SPEED = 4;
+        int ballSpeed = 4;
         Rectangle ball;
         const int B_CHANGE = 10;
         int bSign;
 
         //paddle speeds and rectangles
-        const int PADDLE_SPEED = 6;
+        int paddleSpeed = 6;
         Rectangle p1, p2;
         const int P_CHANGE = 10;
         int pSign;
@@ -220,21 +220,21 @@ namespace Pong
             // TODO create code to move ball either left or right based on ballMoveRight and using BALL_SPEED
             if(ballMoveRight == true)
             {
-                ball.X = ball.X + BALL_SPEED;
+                ball.X = ball.X + ballSpeed;
             }
             else 
             {
-                ball.X = ball.X - BALL_SPEED;
+                ball.X = ball.X - ballSpeed;
             }
             // TODO create code move ball either down or up based on ballMoveDown and using BALL_SPEED
 
             if (ballMoveDown == true)
             {
-                ball.Y = ball.Y + BALL_SPEED;
+                ball.Y = ball.Y + ballSpeed;
             }
             else
             {
-                ball.Y = ball.Y - BALL_SPEED;
+                ball.Y = ball.Y - ballSpeed;
             }
 
             #endregion
@@ -243,7 +243,7 @@ namespace Pong
 
             if (aKeyDown == true && p1.Y > 0)
             {
-                p1.Y = p1.Y - PADDLE_SPEED;
+                p1.Y = p1.Y - paddleSpeed;
             }
             else
             {
@@ -252,7 +252,7 @@ namespace Pong
 
             if (zKeyDown == true && p1.Y < 400)
             {
-                p1.Y = p1.Y + PADDLE_SPEED;
+                p1.Y = p1.Y + paddleSpeed;
             }
             else
             {
@@ -261,7 +261,7 @@ namespace Pong
 
             if (jKeyDown == true && p2.Y > 0)
             {
-                p2.Y = p2.Y - PADDLE_SPEED;
+                p2.Y = p2.Y - paddleSpeed;
             }
             else
             {
@@ -271,7 +271,7 @@ namespace Pong
 
             if (mKeyDown == true && p2.Y < 400)
             {
-                p2.Y = p2.Y + PADDLE_SPEED;
+                p2.Y = p2.Y + paddleSpeed;
             }
             else
             {
@@ -359,11 +359,15 @@ namespace Pong
 
             if (p1.IntersectsWith(ball))
             {
+                ballSpeed++;
+                paddleSpeed++;
                 collisionSound.Play();
                 ballMoveRight = true;
             }
             else if (p2.IntersectsWith(ball))
             {
+                ballSpeed++;
+                paddleSpeed++;
                 collisionSound.Play();
                 ballMoveRight = false;
             }
@@ -380,6 +384,9 @@ namespace Pong
             {
                 scoreSound.Play();
                 player2Score++;
+                paddleSpeed = 6;
+                ballSpeed = 4;
+                
                
                 
 
@@ -401,7 +408,9 @@ namespace Pong
             {
                 scoreSound.Play();
                 player1Score++;
-                
+                paddleSpeed = 6;
+                ballSpeed = 4;
+
 
                 if (player1Score == gameWinScore)
                 {
@@ -442,6 +451,8 @@ namespace Pong
             Thread.Sleep(1000);
             startLabel.Text = "Play Again? (Y/N)";
             brush = new SolidBrush(Color.White);
+            ballSpeed = 4;
+            paddleSpeed = 6; 
 
 
             // TODO create game over logic
