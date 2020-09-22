@@ -59,7 +59,7 @@ namespace Pong
         //player and game scores
         int player1Score = 0;
         int player2Score = 0;
-        int gameWinScore = 3;  // number of points needed to win game
+        int gameWinScore = 5;  // number of points needed to win game
 
         #endregion
 
@@ -148,7 +148,7 @@ namespace Pong
                     brush = new SolidBrush(Color.Orange);
                     break;
                 case 7:
-                    brush = new SolidBrush(Color.MediumSlateBlue);
+                    brush = new SolidBrush(Color.DarkSlateBlue);
                     break;
                 case 8:
                     brush = new SolidBrush(Color.Lavender);
@@ -187,7 +187,7 @@ namespace Pong
             const int PADDLE_EDGE = 20;  // buffer distance between screen edge and paddle            
 
             p1.Width = p2.Width = 10;    //height for both paddles set the same
-            p1.Height = p2.Height = 50;  //width for both paddles set the same
+            p1.Height = p2.Height = 80;  //width for both paddles set the same
 
             //p1 starting position
             p1.X = PADDLE_EDGE;
@@ -287,6 +287,7 @@ namespace Pong
                 ballMoveDown = true;
                 collisionSound.Play();
                 bSign = random.Next(1, 3);
+                pSign = random.Next(1, 3);
 
                 if (bSign == 1 && ball.Width > 10)
                 {
@@ -302,7 +303,17 @@ namespace Pong
                 {
 
                 }
-            
+                if (pSign == 1 && p2.Height > 15)
+                {
+                    p2.Height = p2.Height - P_CHANGE;
+                    p1.Height = p1.Height - P_CHANGE;
+                }
+                else if (pSign == 2 && p2.Height < 100)
+                {
+                    p2.Height = p2.Height + P_CHANGE;
+                    p1.Height = p1.Height + P_CHANGE;
+                }
+
             }
             else if (ball.Y > 430)
             {
@@ -323,6 +334,16 @@ namespace Pong
                 else
                 {
 
+                }
+                if (pSign == 1 && p2.Height > 20)
+                {
+                    p2.Height = p2.Height - P_CHANGE;
+                    p1.Height = p1.Height - P_CHANGE;
+                }
+                else if (pSign == 2 && p2.Height < 100)
+                {
+                    p2.Height = p2.Height + P_CHANGE;
+                    p1.Height = p1.Height + P_CHANGE;
                 }
 
 
@@ -359,6 +380,7 @@ namespace Pong
             {
                 scoreSound.Play();
                 player2Score++;
+               
                 
 
                 if (player2Score == gameWinScore)
@@ -370,6 +392,8 @@ namespace Pong
                     ballMoveRight = false;
                     SetParameters();
                 }
+
+                
 
               
             }
@@ -388,6 +412,7 @@ namespace Pong
                     ballMoveRight = true;
                     SetParameters(); 
                 }
+
             }
 
         
