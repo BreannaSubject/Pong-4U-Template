@@ -1,7 +1,7 @@
 ﻿/*
  * Description:     A basic PONG simulator
- * Author:           
- * Date:            
+ * Author:          Breanna Subject        
+ * Date:            September 22nd 2020          
  */
 
 #region libraries
@@ -359,17 +359,35 @@ namespace Pong
 
             if (p1.IntersectsWith(ball))
             {
-                ballSpeed++;
-                paddleSpeed++;
+                if (pSign == 1)
+                {
+                    ballSpeed++;
+                    paddleSpeed++;
+                }
+                else if (pSign == 2 && ballSpeed > 2)
+                {
+                    ballSpeed--;
+                    paddleSpeed--;
+                }
                 collisionSound.Play();
                 ballMoveRight = true;
             }
             else if (p2.IntersectsWith(ball))
             {
-                ballSpeed++;
-                paddleSpeed++;
+                
                 collisionSound.Play();
                 ballMoveRight = false;
+
+                if (pSign == 1)
+                {
+                    ballSpeed++;
+                    paddleSpeed++;
+                }
+                else if (pSign == 2 && ballSpeed > 2)
+                {
+                    ballSpeed--;
+                    paddleSpeed--;
+                }
             }
             else
             {
