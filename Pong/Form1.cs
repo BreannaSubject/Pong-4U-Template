@@ -27,6 +27,7 @@ namespace Pong
 
         //graphics objects for drawing
         SolidBrush brush = new SolidBrush(Color.White);
+        SolidBrush powerbrush = new SolidBrush(Color.FromArgb(162,57,88));
         Font drawFont = new Font("Courier New", 18);
         Random random = new Random();
         int brushNum;
@@ -60,6 +61,12 @@ namespace Pong
         int player1Score = 0;
         int player2Score = 0;
         int gameWinScore = 5;  // number of points needed to win game
+
+        //power ball rectangle 
+        Rectangle power;
+        const int SPEED = 10;
+        Boolean powerMoveRight = true;
+        Boolean powerMoveDown = true; 
 
         #endregion
 
@@ -205,6 +212,12 @@ namespace Pong
             // TODO set starting Y position for ball to middle of screen, (use this.Height and ball.Height)
             ball.Y = this.Height / 2 - ball.Height / 2;
 
+            power.Width = 10;
+            power.Height = 10;
+
+            power.X = this.Width / 2 - power.Width / 2;
+            power.Y = 20;
+
         }
 
         /// <summary>
@@ -215,7 +228,7 @@ namespace Pong
         {
 
 
-            #region update ball position
+            #region update ball/power position
 
             // TODO create code to move ball either left or right based on ballMoveRight and using BALL_SPEED
             if(ballMoveRight == true)
@@ -236,6 +249,26 @@ namespace Pong
             {
                 ball.Y = ball.Y - ballSpeed;
             }
+
+            if (powerMoveRight == true)
+            {
+                power.X = power.X + SPEED;
+            }
+            else
+            {
+                power.X = power.X - SPEED;
+            }
+
+            if (powerMoveDown == true)
+            {
+                power.Y = power.Y + SPEED;
+            }
+            else
+            {
+                power.Y = power.Y - SPEED;
+            }
+
+
 
             #endregion
 
@@ -303,12 +336,12 @@ namespace Pong
                 {
 
                 }
-                if (pSign == 1 && p2.Height > 15)
+                if (pSign == 1 && p2.Height > 10 && p1.Height > 10)
                 {
                     p2.Height = p2.Height - P_CHANGE;
                     p1.Height = p1.Height - P_CHANGE;
                 }
-                else if (pSign == 2 && p2.Height < 100)
+                else if (pSign == 2 && p2.Height < 300 && p1.Height < 300)
                 {
                     p2.Height = p2.Height + P_CHANGE;
                     p1.Height = p1.Height + P_CHANGE;
@@ -442,13 +475,70 @@ namespace Pong
 
             }
 
-        
-           
-            
-            
+
+
+
+
 
             #endregion
-            
+
+            #region power collision
+
+            int powerUp = random.Next(1, 4);
+
+            if (power.Y < 10)
+            {
+                powerMoveDown = true;
+
+            }
+            else if (power.Y > 430)
+            {
+                powerMoveDown = false; 
+            }
+
+            if (power.X < 10)
+            {
+                powerMoveRight = true;
+            }
+            else if (power.X > 610)
+            {
+                powerMoveRight = false; 
+            }
+
+            if (power.IntersectsWith(p1))
+            {
+
+                if (powerUp == 1)
+                {
+                    p1.Height = 300;
+                }
+                else if (powerUp == 2)
+                {
+                    brush = new SolidBrush(Color.Black);
+                }
+                else
+                {
+                    p2.Height = 30;
+                }
+            }
+            else if (power.IntersectsWith(p2))
+            {
+
+                if (powerUp == 1)
+                {
+                    p2.Height = 300;
+                }
+                else if (powerUp == 2)
+                {
+                    brush = new SolidBrush(Color.Black);
+                }
+                else
+                {
+                    p1.Height = 30;
+                }
+            }
+            #endregion
+
             //refresh the screen, which causes the Form1_Paint method to run
             this.Refresh();
         }
@@ -486,6 +576,7 @@ namespace Pong
             e.Graphics.FillRectangle(brush, p1);
             e.Graphics.FillRectangle(brush, p2);
             e.Graphics.FillRectangle(brush, ball);
+            e.Graphics.FillRectangle(powerbrush, power);
             e.Graphics.DrawString(Convert.ToString(player1Score), drawFont, brush, 586, 10);
             e.Graphics.DrawString (Convert.ToString(player2Score), drawFont, brush, 10, 10);
         }
